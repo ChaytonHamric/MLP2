@@ -28,9 +28,9 @@ pip install pandas sklearn matplotlib
 # Venv
 ## Windows
 ### Start: ``.\WinVenv\Scripts\activate``
-### Exit: ``deactivate```
+### Exit: ``deactivate``
 #
 ## Linux/Mac Os
 ### Start: ``source LinVenv/bin/activate``
-### Exit: ``deactivate```
+### Exit: ``deactivate``
 
