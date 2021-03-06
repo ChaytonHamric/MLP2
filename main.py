@@ -1,14 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import scale
+
 
 Data = pd.read_csv('data.csv')
 
-print(Data)
-
-# plt.plot(Data["Operating Profit Rate"], Data["Bankrupt?"], 'ro')
-# plt.ylabel('Operating Expense Rate')
-# plt.xlabel('Bankrupt Status')
-# plt.show()
+# print(Data)
 
 Data.rename(columns={'Bankrupt?': 'A',
     'ROA(C) before interest and depreciation before interest': 'B',
@@ -26,5 +25,28 @@ Data.rename(columns={'Bankrupt?': 'A',
 
 plt.style.use('dark_background')
 pd.plotting.scatter_matrix(Data)
-plt.show()
+# plt.show()
 
+X = Data.iloc[:, [1,3,11]]
+x = scale(X)
+Y = Data["A"]
+X_train, X_test, Y_train, Y_test = train_test_split(x, Y, test_size=0.25, random_state=42)
+lr = LogisticRegression(random_state=0)
+lr.fit(X_train, Y_train)
+# Coefficients of linear model (b_1,b_2,...,b_p): log(p/(1-p)) = b0+b_1x_1+b_2x_2+...+b_px_p
+print("lr.coef_: {}".format(lr.coef_))
+print("lr.intercept_: {}".format(lr.intercept_))
+
+# Estimate the accuracy of the classifier on future data, using the test data
+##########################################################################################
+print("Training set score: {:.2f}".format(lr.score(X_train, Y_train)))
+print("Test set score: {:.2f}".format(lr.score(X_test, Y_test)))
+
+# Use the trained logistic repression model to predict a new, previously unseen object
+ROAC = 0.3909228294
+ROAB = 0.4361582526
+OER = 0.0001157521304
+Bankrupt_prediction = lr.predict([[ROAC, ROAB, OER]])
+Bankrupt_probability = lr.predict_proba([[ROAC, ROAB, OER]])
+print("pass: {}".format(Bankrupt_prediction[0]))
+print("fail/pass probability: {}".format(Bankrupt_probability[0]))
