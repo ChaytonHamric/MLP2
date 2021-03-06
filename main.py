@@ -10,6 +10,32 @@ from sklearn.svm import SVC
 Data = pd.read_csv('data.csv')
 # print(Data)
 
+print(f'Features and Attributes (Total): 12')
+print(f'Features and Attributes (Type): Bankrupt?, ROA(C) before interest and depreciation before interest, ROA(A) before interest and % after tax, ROA(B) before interest and depreciation after tax, Operating Gross Margin, Realized Sales Gross Margin, Operating Profit Rate, Pre-tax net Interest Rate, After-tax net Interest Rate, Non-industry income and expenditure/revenue, Continuous interest rate (after tax), Operating Expense Rate')
+print(f' ')
+print(f'Number of Classes: 2')
+print(f'Names of Classes: Bankrupt, Not Bankrupt')
+print(f' ')
+print(f'Dataset Partition (Training): 75%')
+print(f'Dataset Partition (Testing): 25%')
+print(f' ')
+print(f'Min:')
+print(f'{round(Data.min(),3)}')
+print(f' ')
+print(f'Max:')
+print(f'{round(Data.max(),3)}')
+print(f' ')
+print(f'Mean:')
+print(f'{round(Data.mean(),3)}')
+print(f' ')
+print(f'Median:')
+print(f'{round(Data.median(),3)}')
+# print(f'Mode:')
+# print(f'{round(Data.mode(axis='columns', numeric_only=True),3)}')
+# print(f'Mode: {round(float(stats.mode(test_acc)[0]),3)}')
+print(f'STD: ')
+print(f'{round(Data.std(),3)}')
+
 Data.rename(columns={'Bankrupt?': 'A',
     'ROA(C) before interest and depreciation before interest': 'B',
     'ROA(A) before interest and % after tax': 'C',
@@ -43,15 +69,6 @@ print("lr.intercept_: {}".format(lr.intercept_))
 print("Training set score: {:.2f}".format(lr.score(X_train, Y_train)))
 print("Test set score: {:.2f}".format(lr.score(X_test, Y_test)))
 
-# Use the trained logistic repression model to predict a new, previously unseen object
-# ROAC = 0.3909228294
-# ROAB = 0.4361582526
-# OER = 0.0001157521304
-# Bankrupt_prediction = lr.predict([[ROAC, ROAB, OER]])
-# Bankrupt_probability = lr.predict_proba([[ROAC, ROAB, OER]])
-# print("pass: {}".format(Bankrupt_prediction[0]))
-# print("fail/pass probability: {}".format(Bankrupt_probability[0]))
-
 # KNN Confusion Matrix
 knn = KNeighborsClassifier(n_neighbors=15, metric='minkowski', p=1, weights='distance')
 knn.fit(X_train, Y_train)
@@ -63,9 +80,8 @@ lrc = LogisticRegression(solver='liblinear', random_state=0)
 lrc.fit(X_train, Y_train)
 pcm(lrc, X_test, Y_test, normalize='true', display_labels=['Not Bankrupt', 'Bankrupt'])
 
-
 # SVM Confusion Matrix
 svc = SVC(C=10, degree=1, kernel='poly')
 svc.fit(X_train, Y_train)
 pcm(svc, X_test, Y_test, normalize='true', display_labels=['Not Bankrupt', 'Bankrupt'])
-plt.show()
+# plt.show()
