@@ -8,7 +8,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
 Data = pd.read_csv('data.csv')
-# print(Data)
 
 print(f'Features and Attributes (Total): 12')
 print(f'Features and Attributes (Type): Bankrupt?, ROA(C) before interest and depreciation before interest, ROA(A) before interest and % after tax, ROA(B) before interest and depreciation after tax, Operating Gross Margin, Realized Sales Gross Margin, Operating Profit Rate, Pre-tax net Interest Rate, After-tax net Interest Rate, Non-industry income and expenditure/revenue, Continuous interest rate (after tax), Operating Expense Rate')
@@ -30,9 +29,8 @@ print(f'{round(Data.mean(),3)}')
 print(f' ')
 print(f'Median:')
 print(f'{round(Data.median(),3)}')
-# print(f'Mode:')
-# print(f'{round(Data.mode(axis='columns', numeric_only=True),3)}')
-# print(f'Mode: {round(float(stats.mode(test_acc)[0]),3)}')
+print(f'Mode:')
+print(f'{round(Data.mode(axis=1, numeric_only=True, dropna=False),3)}')
 print(f'STD: ')
 print(f'{round(Data.std(),3)}')
 
@@ -49,10 +47,8 @@ Data.rename(columns={'Bankrupt?': 'A',
     'Continuous interest rate (after tax)': 'K',
     'Operating Expense Rate': 'L'}, inplace=True)
 
-
 plt.style.use('dark_background')
 pd.plotting.scatter_matrix(Data)
-#plt.show()
 
 X = Data.iloc[:, [1-11]]
 x = scale(X)
@@ -60,12 +56,9 @@ Y = Data["A"]
 X_train, X_test, Y_train, Y_test = train_test_split(x, Y, test_size=0.25, random_state=42)
 lr = LogisticRegression(random_state=0)
 lr.fit(X_train, Y_train)
-# Coefficients of linear model (b_1,b_2,...,b_p): log(p/(1-p)) = b0+b_1x_1+b_2x_2+...+b_px_p
+
 print("lr.coef_: {}".format(lr.coef_))
 print("lr.intercept_: {}".format(lr.intercept_))
-
-# Estimate the accuracy of the classifier on future data, using the test data
-##########################################################################################
 print("Training set score: {:.2f}".format(lr.score(X_train, Y_train)))
 print("Test set score: {:.2f}".format(lr.score(X_test, Y_test)))
 
@@ -84,4 +77,4 @@ pcm(lrc, X_test, Y_test, normalize='true', display_labels=['Not Bankrupt', 'Bank
 svc = SVC(C=10, degree=1, kernel='poly')
 svc.fit(X_train, Y_train)
 pcm(svc, X_test, Y_test, normalize='true', display_labels=['Not Bankrupt', 'Bankrupt'])
-# plt.show()
+plt.show()
